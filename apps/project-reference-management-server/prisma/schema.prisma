@@ -1,0 +1,48 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ProjectType {
+  createdAt         DateTime           @default(now())
+  id                String             @id @default(cuid())
+  name              String?
+  projectReferences ProjectReference[]
+  updatedAt         DateTime           @updatedAt
+}
+
+model People {
+  createdAt DateTime @default(now())
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectReference {
+  businessLine      BusinessLine? @relation(fields: [businessLineId], references: [id])
+  businessLineId    String?
+  createdAt         DateTime      @default(now())
+  endDate           DateTime?
+  id                String        @id @default(cuid())
+  projectManager    String?
+  projectName       String?
+  projectPrice      Float?
+  projectType       ProjectType?  @relation(fields: [projectTypeId], references: [id])
+  projectTypeId     String?
+  responsiblePerson String?
+  startDate         DateTime?
+  updatedAt         DateTime      @updatedAt
+}
+
+model BusinessLine {
+  createdAt         DateTime           @default(now())
+  id                String             @id @default(cuid())
+  name              String?
+  projectReferences ProjectReference[]
+  updatedAt         DateTime           @updatedAt
+}
